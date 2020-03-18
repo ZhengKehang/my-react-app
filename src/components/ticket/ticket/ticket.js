@@ -1,40 +1,38 @@
 import React from 'react';
 import ListItem from '../../common/listItem/listItem'
-import IconTip from '../../common/iconTip/iconTip'
+import CountLine from '../countLine/countLine'
 export default class Ticket extends React.Component{
-    getRightExpand(ticket){
+    toDetail(id){
+        alert(id)
+    }
+    getRightExpand(ticket,type){
         let rightExpand= null;
-        switch (ticket.type) {
+        switch (type) {
             case 'index':
-                rightExpand = this.getCount(ticket.count);
+                rightExpand = (
+                    <CountLine ticket={ticket}
+                               type={type}/>
+                );
                 break;
             case 'search':
-                break
+                rightExpand = (
+                    <React.Fragment>
+                        <CountLine ticket={ticket}
+                                   type={type}/>
+                        <CountLine ticket={ticket}
+                                   type={type}/>
+                    </React.Fragment>
+                );
+                break;
             default:
                 break
         }
         return rightExpand;
     }
-    getCount(count){
-        const {buy,message} = count;
-        return (
-            <div className="count-item">
-                <IconTip icon="icon-liuyan"
-                         tip={buy+"人购买"}>
-                </IconTip>
-                <IconTip icon="icon-liuyan"
-                         tip={message+"人评论"}>
-                </IconTip>
-            </div>
-        )
-    }
-    toDetail(id){
-        alert(id)
-    }
     render() {
-        const ticket = this.props.ticket;
-        const rightExpand = this.getRightExpand(ticket);
-        const {type,url,title,content,id}= ticket;
+        const {ticket,type} = this.props;
+        const rightExpand = this.getRightExpand(ticket,type);
+        const {url,title,content,id}= ticket;
         return (
             <ListItem type={type}
                       onClick={()=>{this.toDetail(id)}}
